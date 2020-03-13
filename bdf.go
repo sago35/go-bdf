@@ -154,7 +154,7 @@ func Parse(data []byte) (*Font, error) {
 				inBitmap = true
 				row = -1
 			case "CHARSET_REGISTRY":
-				f.CharsetRegistry = components[1]
+				f.CharsetRegistry = strings.Trim(components[1], `"`)
 			}
 		} else {
 			if components[0] == "ENDCHAR" {
