@@ -21,14 +21,15 @@ type Character struct {
 }
 
 type Font struct {
-	Name       string
-	Size       int
-	PixelSize  int
-	DPI        [2]int
-	Ascent     int
-	Descent    int
-	Characters []Character
-	Encoding   map[rune]*Character
+	Name            string
+	Size            int
+	PixelSize       int
+	DPI             [2]int
+	Ascent          int
+	Descent         int
+	Characters      []Character
+	Encoding        map[rune]*Character
+	CharsetRegistry string
 }
 
 type Face struct {
@@ -152,6 +153,8 @@ func Parse(data []byte) (*Font, error) {
 			case "BITMAP":
 				inBitmap = true
 				row = -1
+			case "CHARSET_REGISTRY":
+				f.CharsetRegistry = components[1]
 			}
 		} else {
 			if components[0] == "ENDCHAR" {
