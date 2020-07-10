@@ -30,6 +30,7 @@ type Font struct {
 	Characters      []Character
 	Encoding        map[rune]*Character
 	CharsetRegistry string
+	FontBoundingBox [4]int
 }
 
 type Face struct {
@@ -76,6 +77,30 @@ func Parse(data []byte) (*Font, error) {
 				if err != nil {
 					return nil, err
 				}
+			case "FONTBOUNDINGBOX":
+				w, err := strconv.Atoi(components[1])
+				if err != nil {
+					return nil, err
+				}
+
+				h, err := strconv.Atoi(components[2])
+				if err != nil {
+					return nil, err
+				}
+
+				// Lower-left corner?
+				lx, err := strconv.Atoi(components[3])
+				if err != nil {
+					return nil, err
+				}
+				ly, err := strconv.Atoi(components[4])
+				if err != nil {
+					return nil, err
+				}
+				f.FontBoundingBox[0] = w
+				f.FontBoundingBox[1] = h
+				f.FontBoundingBox[2] = lx
+				f.FontBoundingBox[3] = ly
 			case "PIXEL_SIZE":
 				f.PixelSize, err = strconv.Atoi(components[1])
 			case "FONT_ASCENT":
